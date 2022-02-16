@@ -123,5 +123,10 @@ section,
   }
 }
 
+.mainTitle {
+  text-align: center;
+  margin: 2rem 0;
+}
+
 @import './common/_common';
 @import './helpers/_helpers';
