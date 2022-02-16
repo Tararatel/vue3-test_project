@@ -3,12 +3,7 @@
     <h1 class="title">Employees List</h1>
   </div>
 
-  <button
-    @click="isShow = !isShow"
-    v-show="!isShow"
-    class="btn btnPrimary"
-    style="margin-bottom: 25px"
-  >
+  <button @click="isShow = !isShow" v-show="!isShow" class="btn btnPrimary">
     Добавить
   </button>
   <div v-show="isShow" class="note-form__wrapper">
@@ -29,7 +24,7 @@
         class="btn btnPrimary"
         type="submit"
         v-show="isShowBtn"
-        @click.prevent="onUpdate(id)"
+        @click.prevent="onUpdate(currentId)"
       >
         Edit employee
       </button>
@@ -37,7 +32,7 @@
   </div>
 
   <div v-if="loading">
-    <p>Loading page</p>
+    <p>Loading page...</p>
   </div>
   <div v-else>
     <table>
@@ -52,8 +47,8 @@
       </thead>
       <tbody>
         <tr v-for="(employee, id) in employees" :key="employee.id">
-          <td style="cursor: pointer" @click="onRemove(id)">&#10006;</td>
-          <td style="cursor: pointer" @dblclick="onEdit(id)">&#9998;</td>
+          <td class="tdRemove" @click="onRemove(id)">&#10006;</td>
+          <td class="tdEdit" @dblclick="onEdit(id)">&#9998;</td>
           <td>{{ employee.employee_name }}</td>
           <td>{{ employee.employee_salary }}</td>
           <td>{{ employee.employee_age }}</td>
@@ -73,6 +68,7 @@ export default defineComponent({
       isShow: false,
       isShowBtn: false,
       createEmployee: {},
+      currentId: null,
     };
   },
   setup() {
@@ -84,7 +80,6 @@ export default defineComponent({
     const getPeople = () => {
       DataRequests.getEmployee()
         .then((res) => {
-          console.log(res.data);
           employees.value = res.data.data;
           loading.value = false;
         })
@@ -105,9 +100,9 @@ export default defineComponent({
     },
     onSubmit() {
       DataRequests.addEmployee(this.createEmployee)
-        .then((response) => {
-          this.createEmployee = response.data;
-          console.log(this.createEmployee);
+        .then((res) => {
+          this.createEmployee = res.data.data;
+          this.employees.push(this.createEmployee);
           console.log('New employee has been added!');
         })
         .then(() => {
@@ -118,21 +113,20 @@ export default defineComponent({
         });
     },
     onEdit(id) {
+      this.currentId = id;
       DataRequests.getSpecificEmployee(id)
         .then((res) => {
           this.isShowBtn = !this.isShowBtn;
           this.isShow = !this.isShow;
-          console.log(res);
           this.createEmployee = res.data.data;
-          console.log(this.createEmployee);
         })
         .catch((error) => console.log(error));
     },
-    onUpdate(id) {
-      DataRequests.updEmployee(id, this.createEmployee)
+    onUpdate(currentId) {
+      DataRequests.updEmployee(currentId, this.createEmployee)
         .then((res) => {
-          console.log(res);
           console.log('Current employee has been updated!');
+          this.employees.splice(currentId, 1, res.data.data);
         })
         .then(() => {
           this.createEmployee = {};

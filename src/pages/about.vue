@@ -9,7 +9,12 @@
       <li>Обработка несуществующих роутов</li>
       <li>Хеши и моды для роутера</li>
       <li>Настройка общего конфига</li>
-      <li>Шаблон переписан с использованием TypeScript</li>
+      <li>Работа с Rest API "Dummy Rest API Example"</li>
+      <li>
+        Реализована работа методов GET, POST, PUT, DELETE с использованием
+        библиотеки axios
+      </li>
+      <li>Все запросы вынесены в services</li>
     </ul>
   </div>
 </template>

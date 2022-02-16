@@ -1,10 +1,11 @@
 .btn {
   display: inline-block;
-  padding: .8em 2em;
+  padding: 0.8em 2em;
   line-height: 1;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 30px;
+  margin-bottom: 25px;
 
   // default btn
   &.btnDefault {
