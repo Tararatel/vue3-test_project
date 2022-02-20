@@ -31,9 +31,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(employee, id) in employees" :key="employee.id">
-          <td class="tdRemove" @click="onRemove(id)">&#10006;</td>
-          <td class="tdEdit" @dblclick="onEdit(id)">&#9998;</td>
+        <tr v-for="employee in employees" :key="employee.id">
+          <td class="tdRemove" @click="onRemove(employee.id)">&#10006;</td>
+          <td class="tdEdit" @dblclick="onEdit(employee.id)">&#9998;</td>
           <td>{{ employee.employee_name }}</td>
           <td>{{ employee.employee_salary }}</td>
           <td>{{ employee.employee_age }}</td>
@@ -65,7 +65,7 @@ export default defineComponent({
     const getPeople = () => {
       DataRequests.getEmployee()
         .then((res) => {
-          employees.value = res.data.data;
+          employees.value = res.data;
           loading.value = false;
         })
         .catch((error) => console.log(error));
@@ -86,7 +86,7 @@ export default defineComponent({
     onSubmit() {
       DataRequests.addEmployee(this.createEmployee)
         .then((res) => {
-          this.createEmployee = res.data.data;
+          this.createEmployee = res.data;
           this.employees.push(this.createEmployee);
           console.log('New employee has been added!');
         })
@@ -103,15 +103,16 @@ export default defineComponent({
         .then((res) => {
           this.isShowBtn = !this.isShowBtn;
           this.isShow = !this.isShow;
-          this.createEmployee = res.data.data;
+          this.createEmployee = res.data;
         })
         .catch((error) => console.log(error));
     },
     onUpdate(currentId) {
       DataRequests.updEmployee(currentId, this.createEmployee)
         .then((res) => {
+          console.log(res);
           console.log('Current employee has been updated!');
-          this.employees.splice(currentId, 1, res.data.data);
+          this.employees.splice(currentId, 1, res.data);
         })
         .then(() => {
           this.createEmployee = {};
