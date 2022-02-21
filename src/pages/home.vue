@@ -6,9 +6,9 @@
   <button @click="isShow = !isShow" v-show="!isShow" class="btn btnPrimary">Добавить</button>
   <div v-show="isShow" class="note-form__wrapper">
     <form @submit.prevent="onSubmit" class="note-form">
-      <input v-model="createEmployee.employee_name" placeholder="Type the Name" />
-      <input v-model="createEmployee.employee_salary" placeholder="Type the Salary" />
-      <input v-model="createEmployee.employee_age" placeholder="Type the Age" />
+      <input v-model="createEmployee.employee_name" type="text" placeholder="Type the Name" />
+      <input v-model="createEmployee.employee_salary" type="number" placeholder="Type the Salary" />
+      <input v-model="createEmployee.employee_age" type="number" placeholder="Type the Age" />
       <button class="btn btnPrimary" type="submit" v-show="!isShowBtn">Submit</button>
       <button class="btn btnPrimary" type="submit" v-show="isShowBtn" @click.prevent="onUpdate(currentId)">
         Edit employee
